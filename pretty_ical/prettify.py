@@ -19,18 +19,18 @@ def process_ical(file, color_names, block_colors, save_path=None, indent=2):
         colored_line = ''
 
         if line.startswith("BEGIN"):
-            modified_line = colorize(line.strip(), block_colors, color_names) if save_path is None else line.strip()
+            modified_line = colorize(line.rstrip(), block_colors, color_names) if save_path is None else line.rstrip()
             colored_line = ' ' * int(indent) * len(begins) + modified_line
             begins.append(line.split(':')[1])
         elif line.startswith("END"):
             end_type = line.split(':')[1]
-            modified_line = colorize(line.strip(), block_colors, color_names) if save_path is None else line.strip()
+            modified_line = colorize(line.rstrip(), block_colors, color_names) if save_path is None else line.rstrip()
             colored_line = ' ' * int(indent) * (len(begins) - 1) + modified_line
             if end_type not in begins:
                 raise ValueError(f"Unmatched BEGIN found for {end_type}")
             begins.remove(end_type)
         else:
-            colored_line = ' ' * int(indent) * len(begins) + line.strip()
+            colored_line = ' ' * int(indent) * len(begins) + line.rstrip()
 
         output.append(colored_line)
 
